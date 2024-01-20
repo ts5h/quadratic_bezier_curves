@@ -1,35 +1,34 @@
 import React, { FC, useCallback, useEffect, useMemo, useRef } from "react";
 import { useWindowSize } from "../../hooks/useWindowSize";
 
-type positionType = {
+type point = {
   id: number;
   x: number;
   y: number;
-  radius: number;
   speed: number;
-  alpha: number;
 };
 
 const CANVAS_SIZE = {
-  width: 4000,
+  width: 5000,
   height: 4000,
 };
 
 const initializePositions = (windowSize: { width: number; height: number }) => {
-  const pointsLength = Math.floor(Math.random() * 10) + 10;
-  const localPositions: positionType[] = [];
+  // Prepare an odd number of points
+  let pointsLength = Math.floor(Math.random() * 20) + 10;
+  pointsLength = pointsLength % 2 === 1 ? pointsLength + 1 : pointsLength;
+
+  const localPoints: point[] = [];
 
   for (let i = 0; i < pointsLength; i++) {
-    const radius = Math.random() * 75 + 5;
-    const x = Math.random() * (windowSize.width - radius * 2) + radius;
-    const y = Math.random() * (windowSize.height - radius * 2) + radius;
+    const x = Math.random() * windowSize.width;
+    const y = Math.random() * windowSize.height;
     const speed = Math.random() * 20 + 1;
-    const alpha = Math.random() * 0.2 + 0.1;
 
-    localPositions.push({ id: i, x, y, radius, speed, alpha });
+    localPoints.push({ id: i, x, y, speed });
   }
 
-  return localPositions;
+  return localPoints;
 };
 
 export const Curve: FC = () => {
@@ -59,27 +58,10 @@ export const Curve: FC = () => {
       position.x += Math.cos(radian) * position.speed;
       position.y += Math.sin(radian) * position.speed;
 
-      if (position.x < position.radius) {
-        position.x = position.radius;
-      }
-
-      if (position.x > windowSize.width - position.radius) {
-        position.x = windowSize.width - position.radius;
-      }
-
-      if (position.y < position.radius) {
-        position.y = position.radius;
-      }
-
-      if (position.y > windowSize.height - position.radius) {
-        position.y = windowSize.height - position.radius;
-      }
-
       // Draw circle
-      ctx.beginPath();
-      ctx.arc(position.x, position.y, position.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(192, 192, 192, ${position.alpha})`;
-      ctx.fill();
+      // ctx.beginPath();
+      // ctx.arc(position.x, position.y, position.radius, 0, Math.PI * 2);
+      // ctx.fillStyle = `rgba(192, 192, 192, ${position.alpha})`;
     });
 
     animationFrameIdRef.current = requestAnimationFrame(render);
