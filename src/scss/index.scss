@@ -13,10 +13,12 @@ body {
 }
 
 body {
-  margin: 0;
+  background-color: variables.$background-color;
+  color: variables.$color;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
 }
 
 #root {

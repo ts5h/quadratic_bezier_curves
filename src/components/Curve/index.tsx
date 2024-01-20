@@ -10,10 +10,9 @@ type positionType = {
   alpha: number;
 };
 
-const BACKGROUND_COLOR = "rgb(34, 34, 34)";
 const CANVAS_SIZE = {
   width: 4000,
-  height: 3000,
+  height: 4000,
 };
 
 const initializePositions = (windowSize: { width: number; height: number }) => {
@@ -33,7 +32,7 @@ const initializePositions = (windowSize: { width: number; height: number }) => {
   return localPositions;
 };
 
-export const Circles: FC = () => {
+export const Curve: FC = () => {
   const { windowSize } = useWindowSize();
 
   const positions = useMemo(
@@ -44,8 +43,7 @@ export const Circles: FC = () => {
   const animationFrameIdRef = useRef<number>();
 
   const clearCanvas = useCallback((ctx: CanvasRenderingContext2D) => {
-    ctx.fillStyle = BACKGROUND_COLOR;
-    ctx.fillRect(0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
+    ctx.clearRect(0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
   }, []);
 
   const render = useCallback(() => {
