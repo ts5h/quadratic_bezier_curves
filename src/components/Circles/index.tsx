@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useRef } from "react";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { useSound } from "../../hooks/useSound";
 
 type positionType = {
   id: number;
