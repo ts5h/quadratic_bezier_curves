@@ -7,7 +7,6 @@ type point = {
   y: number;
   angle: number;
   speed: number;
-  wait: number;
 };
 
 const PRIMARY_COLOR = "rgb(68, 68, 68)";
@@ -28,9 +27,9 @@ const initializePositions = (windowSize: { width: number; height: number }) => {
     const x = Math.floor(Math.random() * windowSize.width);
     const y = Math.floor(Math.random() * windowSize.height);
     const angle = Math.random() * 360;
-    const speed = Math.random() * 5 + 1;
+    const speed = Math.random() * 4 + 1;
 
-    localPoints.push({ id: i, x, y, angle, speed, wait: speed });
+    localPoints.push({ id: i, x, y, angle, speed });
   }
 
   return localPoints;
@@ -43,6 +42,7 @@ export const Curve: FC = () => {
     () => initializePositions(windowSize),
     [windowSize],
   );
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameIdRef = useRef<number>();
 
@@ -50,9 +50,11 @@ export const Curve: FC = () => {
     ctx.clearRect(0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
   }, []);
 
-  const updatePositions = useCallback(
-    (id: number) => {
-      const position = positions[id];
+  const updatePositions = useCallback(() => {
+    // TODO: Fix windowResize
+
+    for (let i = 0; i < positions.length; i++) {
+      const position = positions[i];
       const radians = (position.angle * Math.PI) / 180;
       const x = position.x + Math.cos(radians) * position.speed;
       const y = position.y + Math.sin(radians) * position.speed;
@@ -69,9 +71,8 @@ export const Curve: FC = () => {
       position.x = x;
       position.y = y;
       position.angle = newAngle;
-    },
-    [positions],
-  );
+    }
+  }, [positions, windowSize]);
 
   const render = useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");
@@ -99,25 +100,49 @@ export const Curve: FC = () => {
       );
 
       // Draw line
-      let prevPosition: point;
-      if (i === 0) {
-        prevPosition = positions[positions.length - 1];
-      } else {
-        prevPosition = positions[i - 1];
+      if (i > 0) {
+        const prevPosition = positions[i - 1];
+        ctx.strokeStyle = SECONDARY_COLOR;
+        ctx.lineWidth = 0.3;
+        ctx.beginPath();
+        ctx.moveTo(prevPosition.x, prevPosition.y);
+        ctx.lineTo(position.x, position.y);
+        ctx.stroke();
       }
 
-      ctx.strokeStyle = SECONDARY_COLOR;
-      ctx.lineWidth = 0.25;
+      // Draw Bezier curve
+      ctx.strokeStyle = PRIMARY_COLOR;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
       ctx.beginPath();
-      ctx.moveTo(prevPosition.x, prevPosition.y);
-      ctx.lineTo(position.x, position.y);
-      ctx.stroke();
 
-      updatePositions(position.id);
+      if (i > 1) {
+        const prevPosition = positions[i - 1];
+        const prevPrevPosition = positions[i - 2];
+        const startPoint = {
+          x: (prevPosition.x - prevPrevPosition.x) / 2 + prevPrevPosition.x,
+          y: (prevPosition.y - prevPrevPosition.y) / 2 + prevPrevPosition.y,
+        };
+        const endPoint = {
+          x: (position.x - prevPosition.x) / 2 + prevPosition.x,
+          y: (position.y - prevPosition.y) / 2 + prevPosition.y,
+        };
+
+        ctx.moveTo(startPoint.x, startPoint.y);
+        ctx.quadraticCurveTo(
+          prevPosition.x,
+          prevPosition.y,
+          endPoint.x,
+          endPoint.y,
+        );
+        ctx.stroke();
+      }
     }
 
+    updatePositions();
     animationFrameIdRef.current = requestAnimationFrame(render);
-  }, [positions, clearCanvas, updatePositions]);
+  }, [clearCanvas, positions, updatePositions, windowSize]);
 
   useEffect(() => {
     render();
