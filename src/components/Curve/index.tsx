@@ -18,7 +18,7 @@ const CANVAS_SIZE = {
 
 const initializePositions = (windowSize: { width: number; height: number }) => {
   // Prepare an odd number of points
-  let pointsLength = Math.floor(Math.random() * 2) + 10;
+  let pointsLength = Math.floor(Math.random() * 10) + 10;
   pointsLength = pointsLength % 2 === 1 ? pointsLength + 1 : pointsLength;
 
   const localPoints: point[] = [];
@@ -60,11 +60,11 @@ export const Curve: FC = () => {
       const y = position.y + Math.sin(radians) * position.speed;
 
       let newAngle = position.angle;
-      if (x < 0 || x > windowSize.width) {
+      if (x <= 0 || x >= windowSize.width) {
         newAngle = 180 - position.angle;
       }
 
-      if (y < 0 || y > windowSize.height) {
+      if (y <= 0 || y >= windowSize.height) {
         newAngle = 360 - position.angle;
       }
 
