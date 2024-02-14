@@ -27,7 +27,7 @@ const initializePositions = (windowSize: { width: number; height: number }) => {
     const x = Math.floor(Math.random() * windowSize.width);
     const y = Math.floor(Math.random() * windowSize.height);
     const angle = Math.random() * 360;
-    const speed = Math.random() * 4 + 1;
+    const speed = Math.random() * 4;
 
     localPoints.push({ id: i, x, y, angle, speed });
   }
@@ -112,7 +112,7 @@ export const Curve: FC = () => {
 
       // Draw Bezier curve
       ctx.strokeStyle = PRIMARY_COLOR;
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2.4;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.beginPath();
