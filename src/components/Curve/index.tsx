@@ -64,8 +64,8 @@ export const Curve: FC = () => {
     let flag = false;
     for (let i = 0; i < positions.length; i++) {
       const position = positions[i];
-      position.x += (position.newX - position.x) / 5;
-      position.y += (position.newY - position.y) / 5;
+      position.x += (position.newX - position.x) / 6;
+      position.y += (position.newY - position.y) / 6;
 
       if (
         Math.abs(position.newX - position.x) < 1 &&
