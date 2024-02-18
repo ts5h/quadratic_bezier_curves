@@ -2,6 +2,9 @@
 
 Draw gravitational quadratic Bézier curves as a study.
 
+![capture](https://github.com/ts5h/quadratic_bezier_curve/assets/1344010/ebb69148-be53-4768-8695-3563654fb235)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
