@@ -19,7 +19,7 @@ const CANVAS_SIZE = {
 
 const initializePositions = () => {
   // Prepare an odd number of points
-  let pointsLength = Math.floor(Math.random() * 10) + 10;
+  let pointsLength = Math.floor(Math.random() * 17) + 4;
   pointsLength = pointsLength % 2 === 1 ? pointsLength + 1 : pointsLength;
 
   const localPoints: point[] = [];
@@ -30,7 +30,7 @@ const initializePositions = () => {
     const x = Math.floor(Math.random() * window.innerWidth);
     const y = Math.floor(Math.random() * window.innerHeight);
     const angle = Math.random() * 360;
-    const speed = Math.random() > 0.1 ? Math.random() * 2 : Math.random() * 10;
+    const speed = Math.random() > 0.1 ? Math.random() * 2 : Math.random() * 20;
 
     localPoints.push({ id: i, newX, newY, x, y, angle, speed });
   }
@@ -56,7 +56,7 @@ export const Curve: FC = () => {
       position.newY = Math.floor(Math.random() * window.innerHeight);
       position.angle = Math.random() * 360;
       position.speed =
-        Math.random() > 0.1 ? Math.random() * 2 : Math.random() * 10;
+        Math.random() > 0.1 ? Math.random() * 2 : Math.random() * 20;
     }
   }, [positions]);
 
@@ -92,14 +92,14 @@ export const Curve: FC = () => {
       let x = position.x + Math.cos(radians) * position.speed;
       let y = position.y + Math.sin(radians) * position.speed;
 
-      // Follow window resizing
-      if (x >= window.innerWidth) x = window.innerWidth;
-      if (y >= window.innerHeight) y = window.innerHeight;
-
       // Bounce off the walls
       let newAngle = position.angle;
       if (x <= 0 || x >= window.innerWidth) newAngle = 180 - position.angle;
       if (y <= 0 || y >= window.innerHeight) newAngle = 360 - position.angle;
+
+      // Follow window resizing
+      if (x >= window.innerWidth) x = window.innerWidth;
+      if (y >= window.innerHeight) y = window.innerHeight;
 
       position.x = x;
       position.y = y;
