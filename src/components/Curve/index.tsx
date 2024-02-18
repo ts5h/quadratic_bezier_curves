@@ -117,9 +117,9 @@ export const Curve: FC = () => {
       if (position.speedY < 0.25) {
         position.speedY = 0.25;
       } else {
-        if (position.angle > 30 && position.angle < 150) {
+        if (position.angle > 20 && position.angle < 160) {
           position.speedY *= 1.01;
-        } else if (position.angle > 210 && position.angle < 330) {
+        } else if (position.angle > 200 && position.angle < 340) {
           position.speedY *= 0.99;
         } else {
           position.speedY *= 1.0;
