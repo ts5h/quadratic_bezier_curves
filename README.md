@@ -1,6 +1,6 @@
 # Quadratic Bézier Curve
 
-Draw a quadratic Bézier curve.
+Draw gravitational quadratic Bézier curves as a study.
 
 # Getting Started with Create React App
 
