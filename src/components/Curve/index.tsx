@@ -102,8 +102,14 @@ export const Curve: FC = () => {
 
       // Bounce off the walls
       let newAngle = position.angle;
-      if (x <= 0 || x >= window.innerWidth) newAngle = 180 - position.angle;
-      if (y <= 0 || y >= window.innerHeight) newAngle = 360 - position.angle;
+      if (x <= 0 || x >= window.innerWidth) {
+        newAngle = 180 - position.angle;
+        if (newAngle < 0) newAngle += 360;
+      }
+
+      if (y <= 0 || y >= window.innerHeight) {
+        newAngle = 360 - position.angle;
+      }
 
       // Follow window resizing
       if (x >= window.innerWidth) x = window.innerWidth;
@@ -114,12 +120,12 @@ export const Curve: FC = () => {
       position.angle = newAngle;
 
       // Adjust Y speed
-      if (position.speedY < 0.25) {
-        position.speedY = 0.25;
+      if (position.speedY < 0.3) {
+        position.speedY = 0.3;
       } else {
-        if (position.angle > 20 && position.angle < 160) {
+        if (position.angle > 10 && position.angle < 170) {
           position.speedY *= 1.01;
-        } else if (position.angle > 200 && position.angle < 340) {
+        } else if (position.angle > 190 && position.angle < 350) {
           position.speedY *= 0.99;
         } else {
           position.speedY *= 1.0;
@@ -210,7 +216,7 @@ export const Curve: FC = () => {
     if (shufflingRef.current) {
       moveToNewPositions();
     } else {
-      if (Math.floor(Math.random() * 1000) === 1 && counterRef.current > 120) {
+      if (Math.floor(Math.random() * 1000) === 1 && counterRef.current > 180) {
         counterRef.current = 0;
         shufflingRef.current = true;
         shufflePositions();
