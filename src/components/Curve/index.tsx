@@ -19,8 +19,7 @@ const CANVAS_SIZE = {
 
 const initializePositions = () => {
   // Prepare an odd number of points
-  // let pointsLength = Math.floor(Math.random() * 20) + 10;
-  let pointsLength = 20;
+  let pointsLength = Math.floor(Math.random() * 10) + 10;
   pointsLength = pointsLength % 2 === 1 ? pointsLength + 1 : pointsLength;
 
   const localPoints: point[] = [];
@@ -31,7 +30,7 @@ const initializePositions = () => {
     const x = Math.floor(Math.random() * window.innerWidth);
     const y = Math.floor(Math.random() * window.innerHeight);
     const angle = Math.random() * 360;
-    const speed = Math.random() > 0.1 ? Math.random() * 2 : Math.random() * 20;
+    const speed = Math.random() > 0.1 ? Math.random() * 2 : Math.random() * 10;
 
     localPoints.push({ id: i, newX, newY, x, y, angle, speed });
   }
@@ -40,7 +39,6 @@ const initializePositions = () => {
 };
 
 export const Curve: FC = () => {
-  // const { windowSize } = useWindowSize();
   const positions = useMemo(() => initializePositions(), []);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -94,18 +92,14 @@ export const Curve: FC = () => {
       let x = position.x + Math.cos(radians) * position.speed;
       let y = position.y + Math.sin(radians) * position.speed;
 
-      let newAngle = position.angle;
-      if (x <= 0 || x >= window.innerWidth) {
-        newAngle = 180 - position.angle;
-      }
-
-      if (y <= 0 || y >= window.innerHeight) {
-        newAngle = 360 - position.angle;
-      }
-
       // Follow window resizing
       if (x >= window.innerWidth) x = window.innerWidth;
       if (y >= window.innerHeight) y = window.innerHeight;
+
+      // Bounce off the walls
+      let newAngle = position.angle;
+      if (x <= 0 || x >= window.innerWidth) newAngle = 180 - position.angle;
+      if (y <= 0 || y >= window.innerHeight) newAngle = 360 - position.angle;
 
       position.x = x;
       position.y = y;
@@ -131,7 +125,7 @@ export const Curve: FC = () => {
 
       // Draw stroke circle
       ctx.strokeStyle = SECONDARY_COLOR;
-      ctx.lineWidth = 0.3;
+      ctx.lineWidth = 0.4;
       ctx.beginPath();
       ctx.arc(position.x, position.y, 5.4, 0, Math.PI * 2);
       ctx.closePath();
@@ -159,7 +153,7 @@ export const Curve: FC = () => {
 
       // Draw line
       ctx.strokeStyle = SECONDARY_COLOR;
-      ctx.lineWidth = 0.3;
+      ctx.lineWidth = 0.4;
       ctx.beginPath();
       ctx.moveTo(prevPosition.x, prevPosition.y);
       ctx.lineTo(position.x, position.y);
@@ -167,7 +161,7 @@ export const Curve: FC = () => {
 
       // Draw Bezier curve
       ctx.strokeStyle = PRIMARY_COLOR;
-      ctx.lineWidth = 2.4;
+      ctx.lineWidth = 2.8;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.beginPath();
