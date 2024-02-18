@@ -7,7 +7,8 @@ type point = {
   x: number;
   y: number;
   angle: number;
-  speed: number;
+  speedX: number;
+  speedY: number;
 };
 
 const PRIMARY_COLOR = "rgb(68, 68, 68)";
@@ -30,9 +31,12 @@ const initializePositions = () => {
     const x = Math.floor(Math.random() * window.innerWidth);
     const y = Math.floor(Math.random() * window.innerHeight);
     const angle = Math.random() * 360;
-    const speed = Math.random() > 0.1 ? Math.random() * 2 : Math.random() * 20;
 
-    localPoints.push({ id: i, newX, newY, x, y, angle, speed });
+    const speed = Math.random() > 0.1 ? Math.random() * 2 : Math.random() * 10;
+    const speedX = speed;
+    const speedY = speed;
+
+    localPoints.push({ id: i, newX, newY, x, y, angle, speedX, speedY });
   }
 
   return localPoints;
@@ -44,6 +48,7 @@ export const Curve: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameIdRef = useRef<number>();
   const shufflingRef = useRef<boolean>(false);
+  const counterRef = useRef<number>(0);
 
   const clearCanvas = useCallback((ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
@@ -55,8 +60,11 @@ export const Curve: FC = () => {
       position.newX = Math.floor(Math.random() * window.innerWidth);
       position.newY = Math.floor(Math.random() * window.innerHeight);
       position.angle = Math.random() * 360;
-      position.speed =
-        Math.random() > 0.1 ? Math.random() * 2 : Math.random() * 20;
+
+      const speed =
+        Math.random() > 0.1 ? Math.random() * 2 : Math.random() * 10;
+      position.speedX = speed;
+      position.speedY = speed;
     }
   }, [positions]);
 
@@ -85,12 +93,12 @@ export const Curve: FC = () => {
   }, [positions]);
 
   const updatePositions = useCallback(() => {
-    // TODO: Fix windowResize
     for (let i = 0; i < positions.length; i++) {
       const position = positions[i];
       const radians = (position.angle * Math.PI) / 180;
-      let x = position.x + Math.cos(radians) * position.speed;
-      let y = position.y + Math.sin(radians) * position.speed;
+
+      let x = position.x + Math.cos(radians) * position.speedX;
+      let y = position.y + Math.sin(radians) * position.speedY;
 
       // Bounce off the walls
       let newAngle = position.angle;
@@ -104,6 +112,17 @@ export const Curve: FC = () => {
       position.x = x;
       position.y = y;
       position.angle = newAngle;
+
+      // Adjust Y speed
+      if (position.speedY < 0.25) {
+        position.speedY = 0.25;
+      } else {
+        if (position.angle >= 0 && position.angle < 180) {
+          position.speedY *= 1.01;
+        } else {
+          position.speedY *= 0.99;
+        }
+      }
     }
   }, [positions]);
 
@@ -189,11 +208,13 @@ export const Curve: FC = () => {
     if (shufflingRef.current) {
       moveToNewPositions();
     } else {
-      if (Math.floor(Math.random() * 1000) === 1) {
+      if (Math.floor(Math.random() * 1000) === 1 && counterRef.current > 120) {
+        counterRef.current = 0;
         shufflingRef.current = true;
         shufflePositions();
       } else {
         updatePositions();
+        counterRef.current++;
       }
     }
 
