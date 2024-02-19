@@ -1,4 +1,4 @@
-# Quadratic Bézier Curve
+# Quadratic Bézier Curves
 
 Generative drawing gravitational quadratic Bézier curves as a study.
 
