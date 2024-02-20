@@ -33,7 +33,7 @@ export const GitHub: FC<Props> = ({ theme }) => {
       }`}
     >
       <a
-        href="https://github.com/ts5h/biased_diamond_ring_2"
+        href="https://github.com/ts5h/quadratic_bezier_curves"
         target="_blank"
         title="GitHub"
         rel="noreferrer"
