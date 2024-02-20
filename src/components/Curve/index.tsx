@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useRef } from "react";
+import { isMobile } from "react-device-detect";
 
 type point = {
   id: number;
@@ -13,14 +14,16 @@ type point = {
 
 const PRIMARY_COLOR = "rgb(68, 68, 68)";
 const SECONDARY_COLOR = "rgba(68, 68, 68, 0.4)";
+// NOTE: It seems that the canvas cannot be displayed on mobile if the number of pixels (height x width) exceeds 16000.
 const CANVAS_SIZE = {
-  width: 5000,
-  height: 4000,
+  width: isMobile ? 4000 : 6000,
+  height: isMobile ? 4000 : 5000,
 };
 
 const initializePositions = () => {
+  const maxPoints = isMobile ? 10 : 16;
   // Prepare an odd number of points
-  let pointsLength = Math.floor(Math.random() * 17) + 4;
+  let pointsLength = Math.floor(Math.random() * maxPoints) + 4;
   pointsLength = pointsLength % 2 === 1 ? pointsLength + 1 : pointsLength;
 
   const localPoints: point[] = [];
@@ -146,7 +149,7 @@ export const Curve: FC = () => {
       // Draw fill circle
       ctx.fillStyle = SECONDARY_COLOR;
       ctx.beginPath();
-      ctx.arc(position.x, position.y, 1.8, 0, Math.PI * 2);
+      ctx.arc(position.x, position.y, isMobile ? 1.2 : 1.8, 0, Math.PI * 2);
       ctx.closePath();
       ctx.fill();
 
@@ -154,12 +157,12 @@ export const Curve: FC = () => {
       ctx.strokeStyle = SECONDARY_COLOR;
       ctx.lineWidth = 0.4;
       ctx.beginPath();
-      ctx.arc(position.x, position.y, 5.4, 0, Math.PI * 2);
+      ctx.arc(position.x, position.y, isMobile ? 3.8 : 5.4, 0, Math.PI * 2);
       ctx.closePath();
       ctx.stroke();
 
       // Draw coordinate
-      ctx.font = "10px Roboto medium";
+      ctx.font = `${isMobile ? 8 : 10}px Roboto medium`;
       ctx.textAlign = "left";
       ctx.fillText(
         `${position.x.toFixed(2)}, ${position.y.toFixed(2)}`,
@@ -188,7 +191,7 @@ export const Curve: FC = () => {
 
       // Draw Bezier curve
       ctx.strokeStyle = PRIMARY_COLOR;
-      ctx.lineWidth = 2.8;
+      ctx.lineWidth = isMobile ? 2.2 : 2.8;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.beginPath();
@@ -243,7 +246,7 @@ export const Curve: FC = () => {
         cancelAnimationFrame(animationFrameIdRef.current);
       }
     };
-  }, []);
+  }, [render]);
 
   return (
     <canvas
