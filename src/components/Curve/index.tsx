@@ -219,7 +219,7 @@ export const Curve: FC = () => {
     if (shufflingRef.current) {
       moveToNewPositions();
     } else {
-      if (Math.floor(Math.random() * 1000) === 1 && counterRef.current > 180) {
+      if (Math.floor(Math.random() * 1000) === 1 && counterRef.current > 1000) {
         counterRef.current = 0;
         shufflingRef.current = true;
         shufflePositions();
