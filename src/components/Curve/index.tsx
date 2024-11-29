@@ -23,7 +23,7 @@ const CANVAS_SIZE = {
 const initializePositions = () => {
   const maxPoints = isMobile ? 10 : 16;
   // Prepare an odd number of points
-  let pointsLength = Math.floor(Math.random() * maxPoints) + 4;
+  let pointsLength = Math.floor(Math.random() * maxPoints) + 5;
   pointsLength = pointsLength % 2 === 1 ? pointsLength + 1 : pointsLength;
 
   const localPoints: point[] = [];
@@ -219,7 +219,7 @@ export const Curve: FC = () => {
     if (shufflingRef.current) {
       moveToNewPositions();
     } else {
-      if (Math.floor(Math.random() * 1000) === 1 && counterRef.current > 180) {
+      if (Math.floor(Math.random() * 1000) === 1 && counterRef.current > 1000) {
         counterRef.current = 0;
         shufflingRef.current = true;
         shufflePositions();
