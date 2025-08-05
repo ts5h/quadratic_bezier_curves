@@ -1,4 +1,5 @@
-import React, { FC, useState } from "react";
+import type { FC } from "react";
+import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import Styles from "../../scss/components/ReturnToHome.module.scss";
 
@@ -22,6 +23,8 @@ export const ReturnToHome: FC<Props> = ({ theme }) => {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onMouseOver={() => handleOnMouse(true)}
       onMouseOut={() => handleOnMouse(false)}
       onFocus={() => handleOnMouse(true)}
