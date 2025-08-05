@@ -2,6 +2,14 @@ import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
 import { afterEach, beforeAll, vi } from "vitest";
 
+// Extend global type definitions for webkit prefixed AudioContext
+declare global {
+  interface Window {
+    webkitAudioContext: typeof AudioContext;
+  }
+  var webkitAudioContext: typeof AudioContext;
+}
+
 // Cleanup after each test
 afterEach(() => {
   cleanup();
@@ -14,7 +22,7 @@ global.AudioContext = vi.fn().mockImplementation(() => ({
   destination: {},
 })) as any;
 
-global.webkitAudioContext = global.AudioContext;
+(global as any).webkitAudioContext = global.AudioContext;
 
 // Mock Canvas API
 beforeAll(() => {

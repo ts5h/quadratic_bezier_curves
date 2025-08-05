@@ -3,3 +3,4 @@ onlyBuiltDependencies:
   - '@parcel/watcher'
   - core-js
   - core-js-pure
+  - esbuild
