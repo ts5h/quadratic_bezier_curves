@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useRef } from "react";
+import { type FC, useCallback, useEffect, useMemo, useRef } from "react";
 import { isMobile } from "react-device-detect";
 
 type point = {

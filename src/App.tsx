@@ -1,7 +1,7 @@
-import React, { FC } from "react";
-import { ReturnToHome } from "./components/ReturnToHome";
-import { GitHub } from "./components/GitHub";
+import type { FC } from "react";
 import { Curve } from "./components/Curve";
+import { GitHub } from "./components/GitHub";
+import { ReturnToHome } from "./components/ReturnToHome";
 import "./scss/App.scss";
 
 export const App: FC = () => (

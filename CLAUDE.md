@@ -26,15 +26,13 @@ pnpm test
 ```
 Runs Jest tests in interactive watch mode.
 
-### Linting
+### Linting and Formatting with Biome
 ```bash
 pnpm lint        # Check for linting errors
 pnpm lint:fix    # Fix linting errors automatically
-```
-
-### Code Formatting
-```bash
-pnpm format      # Format code using Biome
+pnpm format      # Format code
+pnpm check       # Run both linting and formatting checks
+pnpm check:fix   # Fix both linting and formatting issues
 ```
 
 ## Project Architecture
