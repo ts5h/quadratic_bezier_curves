@@ -49,7 +49,7 @@ export const Curve: FC = () => {
   const positions = useMemo(() => initializePositions(), []);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameIdRef = useRef<number>();
+  const animationFrameIdRef = useRef<number | undefined>(undefined);
   const shufflingRef = useRef<boolean>(false);
   const counterRef = useRef<number>(0);
 
